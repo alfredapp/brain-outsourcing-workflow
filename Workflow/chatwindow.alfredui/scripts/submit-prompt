@@ -1,0 +1,62 @@
+#!/usr/bin/osascript -l JavaScript
+
+function envVar(varName) {
+  return $.NSProcessInfo
+    .processInfo
+    .environment
+    .objectForKey(varName).js
+}
+
+function writeFile(path, text) {
+  $.NSFileManager.defaultManager.createDirectoryAtPathWithIntermediateDirectoriesAttributesError(
+    $(path).stringByDeletingLastPathComponent.js, true, undefined, undefined)
+
+  $(text).writeToFileAtomicallyEncodingError(path, true, $.NSUTF8StringEncoding, undefined)
+}
+
+function readChat(path) {
+  const chatString = $.NSString.stringWithContentsOfFileEncodingError(path, $.NSUTF8StringEncoding, undefined).js || "[]"
+  return JSON.parse(chatString)
+}
+
+function startStream(apiEndpoint, apiKey, modelId, contextChat, streamFile, pidStreamFile, timeoutSeconds) {
+  $.NSFileManager.defaultManager.createFileAtPathContentsAttributes(streamFile, undefined, undefined) // Create empty file
+
+  const task = $.NSTask.alloc.init
+  const stdout = $.NSPipe.pipe
+
+  task.executableURL = $.NSURL.fileURLWithPath("/usr/bin/curl")
+  task.arguments = [
+    apiEndpoint,
+    "--speed-limit", "0", "--speed-time", timeoutSeconds.toString(), // Abort stalled connection after a few seconds
+    "--silent", "--no-buffer",
+    "--header", "Content-Type: application/json",
+    "--header", `Authorization: Bearer ${apiKey}`,
+    "--data", JSON.stringify({ model: modelId, messages: contextChat, stream: true }),
+    "--output", streamFile
+  ]
+
+  task.standardOutput = stdout
+  task.launchAndReturnError(false)
+  writeFile(pidStreamFile, task.processIdentifier.toString())
+}
+
+function run(argv) {
+  const chatFile = argv[0]
+  const prompt = argv[1]
+  const maxContext = parseInt(envVar("max_context"))
+  const timeoutSeconds = parseInt(envVar("timeout_seconds"))
+  const apiKey = envVar("api_key") || "dummy-key"
+  const apiEndpoint = envVar("api_endpoint")
+  const modelId = envVar("model_id")
+  const pidStreamFile = `${envVar("alfred_workflow_cache")}/pid.txt`
+  const streamFile = `${envVar("alfred_workflow_cache")}/stream.txt`
+
+  const ongoingChat = readChat(chatFile).concat({ role: "user", content: prompt })
+  const contextChat = ongoingChat.slice(-maxContext)
+
+  if (prompt.trim().length === 0) return
+
+  startStream(apiEndpoint, apiKey, modelId, contextChat, streamFile, pidStreamFile, timeoutSeconds)
+  writeFile(chatFile, JSON.stringify(ongoingChat))
+}

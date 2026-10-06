@@ -1,0 +1,129 @@
+#!/usr/bin/osascript -l JavaScript
+
+// Helpers
+function envVar(varName) {
+  return $.NSProcessInfo
+    .processInfo
+    .environment
+    .objectForKey(varName).js
+}
+
+function fileModified(path) {
+  return $.NSFileManager.defaultManager
+    .attributesOfItemAtPathError(path, undefined)
+    .js["NSFileModificationDate"].js
+    .getTime()
+}
+
+function appendChat(path, message) {
+  const initChatString = $.NSString.stringWithContentsOfFileEncodingError(path, $.NSUTF8StringEncoding, undefined).js
+  const ongoingChat = JSON.parse(initChatString).concat(message)
+  const finalChatString = JSON.stringify(ongoingChat)
+  $(finalChatString).writeToFileAtomicallyEncodingError(path, true, $.NSUTF8StringEncoding, undefined)
+}
+
+function endStreaming(chatAreaObj) {
+  const endStreamingScript = $.NSFileManager.defaultManager
+    .currentDirectoryPath
+    .stringByAppendingPathComponent("scripts/end-streaming").js
+
+  const task = $.NSTask.alloc.init
+  const stdout = $.NSPipe.pipe
+
+  task.executableURL = $.NSURL.fileURLWithPath(endStreamingScript)
+  task.arguments = [ JSON.stringify(chatAreaObj) ]
+  task.standardOutput = stdout
+  task.launchAndReturnError(false)
+
+  const dataOut = stdout.fileHandleForReading.readDataToEndOfFileAndReturnError(false)
+  const stringOut = $.NSString.alloc.initWithDataEncoding(dataOut, $.NSUTF8StringEncoding).js
+
+  return stringOut
+}
+
+// Main
+function run(argv) {
+  const chatFile = argv[0]
+  const stopStreaming = envVar("stop_streaming") === "1"
+  const timeoutSeconds = parseInt(envVar("timeout_seconds"))
+  const streamFile = `${envVar("alfred_workflow_cache")}/stream.txt`
+  const streamString = $.NSString.stringWithContentsOfFileEncodingError(streamFile, $.NSUTF8StringEncoding, undefined).js || ""
+
+  // If response looks like proper JSON, it is probably an error
+  if (streamString.startsWith("{")) {
+    try {
+      const errorMessage = JSON.parse(streamString)["error"]["message"]
+
+      if (errorMessage) {
+        return endStreaming({
+          behaviour: { mode: "replacelast" },
+          text: errorMessage
+        })
+      }
+
+      throw "Could not determine error message" // Fallback to the catch
+    } catch {
+      // If it's not an error from the API, log file contents
+      console.log(streamString)
+
+      return endStreaming({
+        behaviour: { mode: "replacelast" },
+        text: streamString
+      })
+    }
+  }
+
+  // Parse streaming response
+  const chunks = streamString
+    .split("\n") // Split into lines
+    .filter(item => item) // Remove empty lines
+    .map(item => item.replace(/^data: /, "")) // Remove extraneous "data: "
+    .flatMap(item => { try { return JSON.parse(item) } catch { return [] } }) // Parse as JSON
+
+  const responseText = chunks.map(item => item["choices"][0]?.["delta"]["content"]).join("")
+  const finishReason = chunks.slice(-1)[0]?.["choices"][0]["finish_reason"]
+
+  // If reponse is not finished
+  if (!finishReason) {
+    // If File not modified for a while, connection stalled
+    const stalled = new Date().getTime() - fileModified(streamFile) > timeoutSeconds * 1000
+
+    if (stalled) {
+      // Write incomplete response
+      if (responseText.length > 0) appendChat(chatFile, { role: "assistant", content: responseText })
+
+      // Stop
+      return endStreaming({
+        behaviour: { mode: "replacelast", scroll: "end" },
+        text: `${responseText} [Connection Stalled]`,
+      })
+    }
+
+    // If interrupted, write history and stop
+    if (stopStreaming) {
+      appendChat(chatFile, { role: "assistant", content: responseText })
+
+      return endStreaming({
+        behaviour: { mode: "replacelast", scroll: "end" },
+        text: `${responseText} [Answer Interrupted]`,
+      })
+    }
+
+    // If file is empty, we were too fast and will try again on next loop
+    if (streamString.length === 0) return
+
+    // Continue loop
+    return JSON.stringify({ update: { ids: { chatArea: {
+      behaviour: { mode: "replacelast", scroll: "end" },
+      text: responseText,
+    }}}})
+  }
+
+  // When finished, write history and stop
+  appendChat(chatFile, { role: "assistant", content: responseText })
+
+  return endStreaming({
+    behaviour: { mode: "replacelast", scroll: "end" },
+    text: responseText,
+  })
+}

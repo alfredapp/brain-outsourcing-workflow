@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.alfredapp.vitor.brainoutsourcing</string>
+	<key>connections</key>
+	<dict>
+		<key>0B1294BB-0426-43AD-AA79-7E3310B76A08</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>DCD827BC-CD3F-4275-9316-6411DC7C90EE</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>D9FE7302-8027-48E6-8D9A-F427B10DB209</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>B1FCE0C5-F9E7-47F8-A948-AAA4AABF8509</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>41BD1E10-1726-4FC3-B753-D9460C4802E5</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>B1FCE0C5-F9E7-47F8-A948-AAA4AABF8509</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>832BCB52-D6AD-4B35-BD95-4983F6753FE8</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>0B1294BB-0426-43AD-AA79-7E3310B76A08</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<true/>
+			</dict>
+		</array>
+		<key>DCD827BC-CD3F-4275-9316-6411DC7C90EE</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>41BD1E10-1726-4FC3-B753-D9460C4802E5</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>E9FE01A1-31CF-4CC7-ABBE-7B714E9F5DE5</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>0B1294BB-0426-43AD-AA79-7E3310B76A08</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>Vítor Galvão</string>
+	<key>description</key>
+	<string>Chat with local and hosted LLMs</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Brain Outsourcing</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>unstackview</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.hidealfred</string>
+			<key>uid</key>
+			<string>DCD827BC-CD3F-4275-9316-6411DC7C90EE</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>json</key>
+				<string>{
+  "alfredworkflow" : {
+    "config" : {
+      "launchmode" : 1
+    }
+  }
+}</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.json</string>
+			<key>uid</key>
+			<string>41BD1E10-1726-4FC3-B753-D9460C4802E5</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>launchmode</key>
+				<integer>0</integer>
+				<key>path</key>
+				<string>chatwindow.alfredui</string>
+				<key>stackview</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.userinterface.alfredui</string>
+			<key>uid</key>
+			<string>B1FCE0C5-F9E7-47F8-A948-AAA4AABF8509</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>{var:chat_keyword}</string>
+				<key>skipuniversalaction</key>
+				<true/>
+				<key>subtext</key>
+				<string>{const:alfred_workflow_description}</string>
+				<key>text</key>
+				<string>{const:alfred_workflow_name}</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>832BCB52-D6AD-4B35-BD95-4983F6753FE8</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>conditions</key>
+				<array>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:launch_external}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>5</integer>
+						<key>matchstring</key>
+						<string></string>
+						<key>outputlabel</key>
+						<string>External</string>
+						<key>uid</key>
+						<string>D9FE7302-8027-48E6-8D9A-F427B10DB209</string>
+					</dict>
+				</array>
+				<key>elselabel</key>
+				<string>Internal</string>
+				<key>hideelse</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.conditional</string>
+			<key>uid</key>
+			<string>0B1294BB-0426-43AD-AA79-7E3310B76A08</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>action</key>
+				<integer>0</integer>
+				<key>argument</key>
+				<integer>0</integer>
+				<key>focusedappvariable</key>
+				<false/>
+				<key>focusedappvariablename</key>
+				<string></string>
+				<key>hotkey</key>
+				<integer>0</integer>
+				<key>hotmod</key>
+				<integer>0</integer>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+				<key>relatedAppsMode</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.hotkey</string>
+			<key>uid</key>
+			<string>E9FE01A1-31CF-4CC7-ABBE-7B714E9F5DE5</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>## Setup
+
+Configure your desired LLM in the [Workflow’s Configuration](https://www.alfredapp.com/help/workflows/user-configuration/).
+
+`API Endpoint` is the *chat completions* address specific to your service. Common values include:
+
+| Provider         | Endpoint |
+| ---------------- | -------- |
+| OpenAI/ChatGPT   | https://api.openai.com/v1/chat/completions |
+| Anthropic/Claude | https://api.anthropic.com/v1/chat/completions |
+| Google/Gemini    | https://generativelanguage.googleapis.com/v1beta/openai/chat/completions |
+| OpenRouter       | https://openrouter.ai/api/v1/chat/completions |
+| Ollama           | http://localhost:11434/v1/chat/completions |
+| LM Studio        | http://localhost:1234/v1/chat/completions |
+| llama.cpp        | http://localhost:8080/v1/chat/completions |
+
+`API Key` is the unique identifier provided by the service to access your account. For local LLMs this can generally be left empty and a dummy key is used.
+
+`Model ID` is the *exact* name of the model, which depends on your provider. They tend to closely follow the model name. For example:
+
+| Model Name       | Model ID |
+| ---------------- | -------- |
+| ChatGPT 5.4 Nano | `gpt-5.4-nano` |
+| Claude Opus 5.5  | `claude-opus-5-5` |
+| Llama 3.2 1B     | `llama3.2:1b` |
+
+## Usage
+
+Launch a UI to query an LLM via the `chat` keyword.
+
+![Start query](images/about/keyword.png)
+
+![Querying](images/about/chatui.png)
+
+Configure the [Hotkey](https://www.alfredapp.com/help/workflows/triggers/hotkey/) for faster triggering.</string>
+	<key>uidata</key>
+	<dict>
+		<key>0B1294BB-0426-43AD-AA79-7E3310B76A08</key>
+		<dict>
+			<key>xpos</key>
+			<real>275</real>
+			<key>ypos</key>
+			<real>105</real>
+		</dict>
+		<key>41BD1E10-1726-4FC3-B753-D9460C4802E5</key>
+		<dict>
+			<key>xpos</key>
+			<real>440</real>
+			<key>ypos</key>
+			<real>65</real>
+		</dict>
+		<key>832BCB52-D6AD-4B35-BD95-4983F6753FE8</key>
+		<dict>
+			<key>xpos</key>
+			<real>85</real>
+			<key>ypos</key>
+			<real>85</real>
+		</dict>
+		<key>B1FCE0C5-F9E7-47F8-A948-AAA4AABF8509</key>
+		<dict>
+			<key>xpos</key>
+			<real>515</real>
+			<key>ypos</key>
+			<real>85</real>
+		</dict>
+		<key>DCD827BC-CD3F-4275-9316-6411DC7C90EE</key>
+		<dict>
+			<key>xpos</key>
+			<real>370</real>
+			<key>ypos</key>
+			<real>65</real>
+		</dict>
+		<key>E9FE01A1-31CF-4CC7-ABBE-7B714E9F5DE5</key>
+		<dict>
+			<key>xpos</key>
+			<real>85</real>
+			<key>ypos</key>
+			<real>230</real>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>placeholder</key>
+				<string>Web address ending in /chat/completions</string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>API Endpoint</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>api_endpoint</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>placeholder</key>
+				<string>By default uses a dummy key for local models</string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>API Key</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>api_key</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>placeholder</key>
+				<string>Specific model name ID</string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Configure the model connection. Refer to the setup documentation.</string>
+			<key>label</key>
+			<string>Model ID</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>model_id</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>chat</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Chat Keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>chat_keyword</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<true/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string>Open in a separate window</string>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>External</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>launch_external</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>defaultvalue</key>
+				<integer>24</integer>
+				<key>markercount</key>
+				<integer>25</integer>
+				<key>maxvalue</key>
+				<integer>50</integer>
+				<key>minvalue</key>
+				<integer>2</integer>
+				<key>onlystoponmarkers</key>
+				<true/>
+				<key>showmarkers</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>How many older questions and answers to send.</string>
+			<key>label</key>
+			<string>Context</string>
+			<key>type</key>
+			<string>slider</string>
+			<key>variable</key>
+			<string>max_context</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>defaultvalue</key>
+				<integer>10</integer>
+				<key>markercount</key>
+				<integer>6</integer>
+				<key>maxvalue</key>
+				<integer>30</integer>
+				<key>minvalue</key>
+				<integer>5</integer>
+				<key>onlystoponmarkers</key>
+				<true/>
+				<key>showmarkers</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>How many seconds to wait before giving up the connection.</string>
+			<key>label</key>
+			<string>Timeout</string>
+			<key>type</key>
+			<string>slider</string>
+			<key>variable</key>
+			<string>timeout_seconds</string>
+		</dict>
+	</array>
+	<key>version</key>
+	<string>26.0</string>
+	<key>webaddress</key>
+	<string>https://github.com/alfredapp/brain-outsourcing-workflow/</string>
+</dict>
+</plist>

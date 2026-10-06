@@ -1,0 +1,38 @@
+#!/usr/bin/osascript -l JavaScript
+
+function envVar(varName) {
+  return $.NSProcessInfo
+    .processInfo
+    .environment
+    .objectForKey(varName).js
+}
+
+function dirContents(dirPathString) {
+  return $.NSFileManager
+    .defaultManager
+    .contentsOfDirectoryAtURLIncludingPropertiesForKeysOptionsError(
+      $.NSURL.fileURLWithPath(dirPathString),
+      undefined,
+      $.NSDirectoryEnumerationSkipsHiddenFiles,
+      undefined).js
+    ?.sort((a, b) => b.path.js.localeCompare(a.path.js))
+}
+
+function readFile(path) {
+  return $.NSString.stringWithContentsOfFileEncodingError(path, $.NSUTF8StringEncoding, undefined).js
+}
+
+const chatData = dirContents(envVar("alfred_workflow_data"))
+  ?.flatMap(url => {
+    if (url.pathExtension.js !== "json") return []
+
+    const file = url.path.js
+    const firstMessage = JSON.parse(readFile(file)).find(entry => entry.role === "user").content
+
+    return {
+      "uid": file,
+      "chatName.text": firstMessage,
+    }
+  })
+
+JSON.stringify({ update: { ids: { chatList: { data: { src:  chatData }}}}})
